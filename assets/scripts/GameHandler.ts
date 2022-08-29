@@ -67,12 +67,13 @@ export default class GameHandler extends cc.Component {
   protected activateClickAnywhere(): void {
     this.clickAnywhere.active = true;
     MusicHandler.instance.playIntro();
-    this.clickAnywhere.on(cc.Node.EventType.MOUSE_UP, this.onClickAnywhere.bind(this));
+    cc.Canvas.instance.node.once(cc.Node.EventType.TOUCH_START, this.onClickAnywhere.bind(this), this, true);
   }
 
   protected deactivateClickAnywhere(): void {
-    this.clickAnywhere.active = false;
     MusicHandler.instance.stopIntro();
+    cc.Canvas.instance.node.off(cc.Node.EventType.TOUCH_START, this.onClickAnywhere.bind(this), this, true);
+    this.clickAnywhere.active = false;
   }
 
   protected update(dt: number) {

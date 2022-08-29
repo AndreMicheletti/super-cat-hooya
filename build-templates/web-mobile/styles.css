@@ -3,7 +3,11 @@
  padding: 0; 
 }
 
-#soundPrompt {
+body {
+  background-color: black;
+}
+
+#splash {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -11,7 +15,8 @@
   z-index: 1000; 
 }
 
-#soundPrompt p {
+#splash .content {
+  color: white;
   position: absolute;
   top: 50%;
   text-align: center;
@@ -20,6 +25,23 @@
   margin: 0 auto;
   font-family: monospace;
   text-transform: uppercase;
+}
+
+.progress-bar {
+  margin: 10px auto;
+  width: 300px;
+  height: 15px;
+  background-color: #4b4a4a;
+  border-radius: 5px;
+}
+
+.progress-bar span {
+  margin: auto 0;
+  width: 0%;
+  display: block;
+  height: 15px;
+  background-color: #369f3e;
+  border-radius: 5px;
 }
 
 #GameCanvas {

@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "publish": "butler push ./build/web-mobile andre-micheletti/supercat-hooya:web-latest"
+  },
   "dependencies": {
     "howler": "^2.2.3"
   },

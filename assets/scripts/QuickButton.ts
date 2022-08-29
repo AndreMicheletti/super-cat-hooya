@@ -16,7 +16,6 @@ export default class QuickButton extends cc.Component {
   @property(cc.Sprite)
   public wonSprite: cc.Sprite = null;
 
-
   private active = false;
 
   private won = false;
@@ -33,9 +32,10 @@ export default class QuickButton extends cc.Component {
     this.active = true;
     this.tween = cc.tween(this.node)
       .to(0.3, { scale: 1.2 }, { easing: cc.easing.cubicOut })
-      .call(() =>
-        this.node.on(cc.Node.EventType.MOUSE_UP, this.winQuickButton.bind(this))
-      )
+      .call(() => {
+        this.node.once(cc.Node.EventType.MOUSE_DOWN, this.winQuickButton.bind(this), this, true)
+        this.node.once(cc.Node.EventType.TOUCH_START, this.winQuickButton.bind(this), this, true)
+      })
       .delay(time * 0.1)
       .to(time * 0.9, { scale: 0.4 })
       .call(() => this.loseQuickButton())
@@ -61,16 +61,13 @@ export default class QuickButton extends cc.Component {
     if (this.won || !this.active) return;
     this.active = false;
     this.won = false;
-    this.node.off(cc.Node.EventType.MOUSE_DOWN, this.winQuickButton.bind(this));
+    this.node.off(cc.Node.EventType.MOUSE_DOWN, this.winQuickButton.bind(this), this, true);
+    this.node.off(cc.Node.EventType.TOUCH_START, this.winQuickButton.bind(this), this, true);
     cc.director.getScene().emit(QuickButtonSignal.Lose);
     this.tween.stop();
     this.tween = cc.tween(this.node)
       .to(0.3, { scale: 0 }, { easing: cc.easing.backIn })
       .call(() => this.node.destroy())
       .start();
-  }
-
-  protected start(): void {
-
   }
 }
