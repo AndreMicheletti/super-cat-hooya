@@ -53,6 +53,7 @@ export default class MusicHandler extends cc.Component {
     this.introLoop = new Howl({
       src: [this.introLoopClip.nativeUrl],
       volume: 1,
+      pool: 1,
       loop: true,
       html5: true,
     });
@@ -85,6 +86,7 @@ export default class MusicHandler extends cc.Component {
 
   public playIntro(): void {
     this.introLoop.off('fade');
+    this.introLoop.stop();
     this.introLoop.volume(1);
     this.introLoop.play();
   }
