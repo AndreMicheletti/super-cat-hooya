@@ -36,8 +36,8 @@ export default class QuickButton extends cc.Component {
       .call(() =>
         this.node.on(cc.Node.EventType.MOUSE_UP, this.winQuickButton.bind(this))
       )
-      .delay(time * 0.9)
-      .to(time * 0.1, { scale: 0.4 }, { easing: cc.easing.cubicIn })
+      .delay(time * 0.1)
+      .to(time * 0.9, { scale: 0.4 })
       .call(() => this.loseQuickButton())
       .start();
   }

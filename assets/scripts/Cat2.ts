@@ -13,6 +13,9 @@ export default class Cat2 extends cc.Component {
   @property(cc.Sprite)
   public splash: cc.Sprite = null;
 
+  @property(cc.Sprite)
+  public screenFlash: cc.Sprite = null;
+
   @property(dragonBones.ArmatureDisplay)
   public effect1: dragonBones.ArmatureDisplay = null;
 
@@ -59,6 +62,7 @@ export default class Cat2 extends cc.Component {
         this.effectEnterTween(node).start();
         this.effect1.playAnimation('effect1', 0);
         this.activateSplash(cc.Color.GREEN);
+        this.makeScreenFlash(cc.Color.GREEN);
         this.cameraZoom(1.1);
         setTimescale(1.5);
         break;
@@ -68,6 +72,7 @@ export default class Cat2 extends cc.Component {
         this.effectEnterTween(this.effect1.node).start();
         this.effect2.playAnimation('effect2', 0);
         this.activateSplash(cc.Color.BLUE);
+        this.makeScreenFlash(cc.Color.BLUE);
         this.cameraZoom(1.2);
         setTimescale(2);
         break;
@@ -79,6 +84,7 @@ export default class Cat2 extends cc.Component {
         this.effectEnterTween(node, 1.3).start();
         this.effect3.playAnimation('effect3', 0);
         this.activateSplash(cc.Color.YELLOW);
+        this.makeScreenFlash(cc.Color.YELLOW);
         this.cameraZoom(1.4);
         setTimescale(3);
         break;
@@ -105,6 +111,19 @@ export default class Cat2 extends cc.Component {
 
   protected cameraZoom(newZoom: number): void {
     cc.tween(this.camera).to(0.5, { zoomRatio: newZoom }, { easing: cc.easing.elasticOut }).start();
+  }
+
+  protected makeScreenFlash(color: cc.Color): void {
+    this.screenFlash.node.parent.width = 0;
+    this.screenFlash.node.parent.height = 0;
+    this.screenFlash.node.color = color;
+    cc.tween(this.screenFlash.node)
+      .to(0.2, { opacity: 200 }, { easing: cc.easing.cubicOut })
+      .to(0.4, { opacity: 0 }, { easing: cc.easing.cubicIn })
+      .start();
+    cc.tween(this.screenFlash.node.parent)
+      .to(0.6, { width: 600, height: 600 }, { easing: cc.easing.cubicOut })
+      .start();
   }
 
   protected activateSplash(color: cc.Color): void {

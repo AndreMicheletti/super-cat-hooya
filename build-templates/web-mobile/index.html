@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Cocos Creator | <%=project%></title>
+  <title>SuperCat Hooya</title>
 
   <!--http://www.html5rocks.com/en/mobile/mobifying/-->
   <meta name="viewport"
@@ -41,9 +41,9 @@
   <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
-  <div id="soundPrompt" style="display: block;" onclick="enableAudio(event)">
+  <!-- <div id="soundPrompt" style="display: block;" onclick="enableAudio(event)">
     <p>Click to enable audio</p>
-  </div>
+  </div> -->
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
   <div id="splash">
     <div class="progress-bar stripes">
@@ -52,18 +52,17 @@
   </div>
 
 <script src="src/settings.js" charset="utf-8"></script>
-<%=webDebugger%>
 <script src="main.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-  function enableAudio(event) {
-    event.preventDefault();
-    Howler.ctx = new AudioContext();
-    Howler.ctx.addEventListener('statechange', () => {
-      console.log(' Audio State Changed');
-    });
-    event.target.style.display = 'none';
-  }
+  // function enableAudio(event) {
+  //   event.preventDefault();
+  //   Howler.ctx = new AudioContext();
+  //   Howler.ctx.addEventListener('statechange', () => {
+  //     console.log(' Audio State Changed');
+  //   });
+  //   event.target.style.display = 'none';
+  // }
 
   (function () {
       // open web debugger console

@@ -5,6 +5,12 @@ import QuickButton, { QuickButtonSignal } from "./QuickButton";
 
 const { ccclass, property } = cc._decorator;
 
+const LIFES = 2;
+
+export enum GameSignals {
+  GameOver = 'GAME_OVER'
+}
+
 @ccclass
 export default class GameHandler extends cc.Component {
   static instance: GameHandler = null;
@@ -48,13 +54,25 @@ export default class GameHandler extends cc.Component {
     GameHandler.instance = this;
     Howler.autoSuspend = true;
     Howler.autoUnlock = true;
+    cc.game.on(cc.game.EVENT_HIDE, () => Howler.ctx?.suspend());
+    cc.game.on(cc.game.EVENT_SHOW, () => Howler.ctx?.resume());
   }
 
   protected start(): void {
     // this.startGame();
-    this.clickAnywhere.active = true;
-    this.clickAnywhere.on(cc.Node.EventType.MOUSE_UP, this.onClickAnywhere.bind(this));
     // this.spawnExplosion();
+    this.activateClickAnywhere();
+  }
+
+  protected activateClickAnywhere(): void {
+    this.clickAnywhere.active = true;
+    MusicHandler.instance.playIntro();
+    this.clickAnywhere.on(cc.Node.EventType.MOUSE_UP, this.onClickAnywhere.bind(this));
+  }
+
+  protected deactivateClickAnywhere(): void {
+    this.clickAnywhere.active = false;
+    MusicHandler.instance.stopIntro();
   }
 
   protected update(dt: number) {
@@ -68,7 +86,7 @@ export default class GameHandler extends cc.Component {
     this.running = true;
     this.lost = 0;
     this.timer = 0;
-    this.clickAnywhere.active = false;
+    this.deactivateClickAnywhere();
     this.btnFrequency = 1;
     this.btnTime = 1;
     const scene = cc.director.getScene();
@@ -89,8 +107,8 @@ export default class GameHandler extends cc.Component {
       .delay(3)
       .call(() => {
         this.cat.increaseLevel();
-        this.btnFrequency = 0.6;
-        this.btnTime = 0.5;
+        this.btnFrequency = 0.4;
+        this.btnTime = 0.7;
       })
       .delay(4.2)
       .call(() => {
@@ -117,7 +135,7 @@ export default class GameHandler extends cc.Component {
   protected onLostBtn(): void {
     if (!this.running) return;
     this.lost += 1;
-    if (this.lost >= 5) this.gameOver();
+    if (this.lost >= LIFES) this.gameOver();
   }
 
   protected gameOver(won = false): void {
@@ -132,10 +150,11 @@ export default class GameHandler extends cc.Component {
       won ? quickButton?.winQuickButton() : quickButton?.loseQuickButton();
     });
     if (!won) {
+      scene.emit(GameSignals.GameOver);
       MusicHandler.instance.stopGame();
       this.cat.resetLevel();
       this.levelUpTween.stop();
-      setTimeout(() => this.clickAnywhere.active = true, 1000);
+      setTimeout(() => this.activateClickAnywhere(), 1000);
     }
   }
 

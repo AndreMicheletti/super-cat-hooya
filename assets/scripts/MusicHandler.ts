@@ -1,4 +1,6 @@
 import { Howl } from "howler";
+import { GameSignals } from "./GameHandler";
+import { QuickButtonSignal } from "./QuickButton";
 
 const { ccclass, property } = cc._decorator;
 
@@ -7,19 +9,53 @@ export default class MusicHandler extends cc.Component {
   static instance: MusicHandler = null;
 
   @property(cc.AudioClip)
+  public introLoopClip: cc.AudioClip = null;
+
+  @property(cc.AudioClip)
   public hooyaClip: cc.AudioClip = null;
 
   @property(cc.AudioClip)
   public rockClip: cc.AudioClip = null;
 
+  @property(cc.AudioClip)
+  public loseClip: cc.AudioClip = null;
+
+  @property(cc.AudioClip)
+  public loseAllClip: cc.AudioClip = null;
+
+  @property(cc.AudioClip)
+  public winClip: cc.AudioClip = null;
+
+  public introLoop: Howl = null;
+
   public hooya: Howl = null;
 
   public rock: Howl = null;
+
+  public lose: Howl = null;
+
+  public loseAll: Howl = null;
+
+  public win: Howl = null;
 
   private rockTween: cc.Tween = null;
 
   protected onLoad(): void {
     MusicHandler.instance = this;
+    this.createSounds();
+    const scene = cc.director.getScene();
+    scene.on(GameSignals.GameOver, () => this.loseAll.play());
+    scene.on(QuickButtonSignal.Lose, () => this.lose.play());
+    scene.on(QuickButtonSignal.Win, () => this.win.play());
+  }
+
+  protected createSounds(): void {
+    this.introLoop = new Howl({
+      src: [this.introLoopClip.nativeUrl],
+      volume: 1,
+      loop: true,
+      html5: true,
+    });
     this.hooya = new Howl({
       src: [this.hooyaClip.nativeUrl],
       volume: 0.8,
@@ -30,6 +66,32 @@ export default class MusicHandler extends cc.Component {
       volume: 1,
       html5: true,
     });
+    this.lose = new Howl({
+      src: [this.loseClip.nativeUrl],
+      volume: 0.5,
+      html5: true,
+    });
+    this.loseAll = new Howl({
+      src: [this.loseAllClip.nativeUrl],
+      volume: 0.5,
+      html5: true,
+    });
+    this.win = new Howl({
+      src: [this.winClip.nativeUrl],
+      volume: 0.5,
+      html5: true,
+    });
+  }
+
+  public playIntro(): void {
+    this.introLoop.off('fade');
+    this.introLoop.volume(1);
+    this.introLoop.play();
+  }
+
+  public stopIntro(): void {
+    this.introLoop.fade(1, 0, 2500);
+    this.introLoop.once('fade', () => this.introLoop.stop());
   }
 
   public startGame(): void {
