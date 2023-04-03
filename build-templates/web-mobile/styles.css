@@ -1,10 +1,11 @@
 * {
- margin: 0;
- padding: 0; 
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background-color: black;
+  color: #ff0066;
 }
 
 #splash {
@@ -12,18 +13,19 @@ body {
   height: 100vh;
   position: absolute;
   background: #0000007d;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 #splash .content {
-  color: white;
+  color: #ff0066;
   position: absolute;
   top: 50%;
   text-align: center;
   width: 100%;
   font-size: 50px;
   margin: 0 auto;
-  font-family: monospace;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-shadow: #890b56;
   text-transform: uppercase;
 }
 
@@ -31,7 +33,7 @@ body {
   margin: 10px auto;
   width: 300px;
   height: 15px;
-  background-color: #4b4a4a;
+  background-color: #440632;
   border-radius: 5px;
 }
 
@@ -40,7 +42,7 @@ body {
   width: 0%;
   display: block;
   height: 15px;
-  background-color: #369f3e;
+  background-color: #890b56;
   border-radius: 5px;
 }
 
